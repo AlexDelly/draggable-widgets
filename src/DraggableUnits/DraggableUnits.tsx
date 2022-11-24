@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
@@ -32,6 +32,19 @@ export const DraggableUits = () => {
       });
     }
   };
+
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setIsActive(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => handleKeyPress(e));
+    return () => {
+      document.removeEventListener("keydown", (e) => handleKeyPress(e));
+    };
+  }, [isActive]);
 
   const activateWidgets = () => {
     setIsActive(true);

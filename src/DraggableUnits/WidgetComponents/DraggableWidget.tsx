@@ -1,7 +1,14 @@
 import { RefObject, useRef } from "react";
-import { DropTargetMonitor, useDrag, useDrop } from "react-dnd";
+import {
+  DropTargetMonitor,
+  useDrag,
+  useDrop,
+  DragPreviewImage,
+} from "react-dnd";
 import { UseOutsideClick } from "../../utils";
 import { Widget } from "./Widget";
+
+const imgPreview = require("../../Icons/widget_preview.png");
 
 interface DraggableWidgetProps {
   id: string;
@@ -60,7 +67,7 @@ export const DraggableWidget = ({
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     item: { index, name },
     type: "widget",
     collect: (monitor) => ({
@@ -77,6 +84,7 @@ export const DraggableWidget = ({
   return (
     <UseOutsideClick isActive={isActive} callback={deactivate}>
       <div className="widget" ref={ref} onDragOver={(e) => e.preventDefault()}>
+        <DragPreviewImage connect={preview} src={imgPreview} />
         <Widget
           deleteWidget={handleDeleteWidget}
           isActive={isActive}
